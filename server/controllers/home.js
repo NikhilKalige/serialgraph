@@ -2,6 +2,8 @@ var express = require('express'),
   router = express.Router(),
   Article = require('../models/article');
 
+var Serial = require("../serial/main");
+
 module.exports = function (app) {
   app.use('/', router);
 };
@@ -15,8 +17,5 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/serialport', function(req, res, next) {
-    res.json([
-        "/dev/ttyACM0",
-        "/dev/ttyUSB1",
-    ])
+  //res.json(Serial.list())
 });

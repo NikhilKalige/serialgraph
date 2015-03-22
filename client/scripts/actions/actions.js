@@ -1,21 +1,29 @@
 var Reflux = require("reflux");
 var $ = jQuery;
+var socket = io.connect('http://localhost:8000');
 
 var actions = Reflux.createActions({
     "serialPortGet": {},
     "serialPortGot": {},
-    "serialPortSet": {}
+    "serialPortSet": {},
+    "serialPortData": {}
 });
 
 actions.serialPortGet.preEmit = function() {
-    $.get("/serialport", function(data) {
+    socket.emit('serialport');
+    socket.on('serialport', function(data) {
         actions.serialPortGot(data);
     })
 }
 
 actions.serialPortSet.listen(function(data) {
-    console.log(data);
+    socket.emit('serialportset', data);
 });
+
+socket.on('serialportdata', function(data) {
+    // console.log(data);
+    actions.serialPortData(data);
+})
 /*actions.serialPortGet.listen(function() {
     $.get("/serialport", function(data) {
         console.log(data);
