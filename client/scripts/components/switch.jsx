@@ -22,6 +22,13 @@ module.exports = React.createClass({
       width: this.props.whole_width,
       marginLeft: 0
     };
+    var self = this;
+
+    var click_handler = function() {
+      self.props.onToggle(
+        self.props.name.toLowerCase()
+      );
+    }
 
     if(this.props.on) {
       switch_style.marginLeft = 0;
@@ -34,7 +41,7 @@ module.exports = React.createClass({
       <div>
         <p style={{display: "inline-block"}}>{this.props.name}</p>
         <div className={main_class} style={{width: this.props.width}}>
-          <div onClick={this.props.onToggle} className="bootstrap-switch-container" ref="switch" style={switch_style}>
+          <div onClick={click_handler} className="bootstrap-switch-container" ref="switch" style={switch_style}>
             <span className={on_class} style={{width: this.props.sw_width}}>ON</span>
             <span className="bootstrap-switch-label" style={{width: this.props.sw_width}}>&nbsp;</span>
             <span className={off_class} style={{width: this.props.sw_width}}>OFF</span>

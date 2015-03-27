@@ -4,7 +4,7 @@ var Reflux = require("reflux");
 var Graph = require("./graph.jsx");
 var Console = require("./console.jsx");
 var Serial = require("./serial.jsx");
-var Switch = require("./switch.jsx");
+var Buttons = require('./buttons.jsx');
 
 var SerialStore = require("../stores/serial");
 var DisplayConsole = require("./console-display.jsx");
@@ -19,8 +19,6 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       lines: [],
-      console_state: true,
-      pause_state: false
     }
   },
 
@@ -30,39 +28,10 @@ var App = React.createClass({
     });
   },
 
-  consoleToggle: function() {
-    this.setState({
-      console_state: !this.state.console_state
-    });
-  },
-
-  pauseToggle: function() {
-    this.setState({
-      pause_state: !this.state.pause_state
-    });
-  },
-
   render: function() {
     return (
       <div>
-        <div className="container">
-          <Row className="text-center">
-            <Col md={3}>
-                <Graph/>
-            </Col>
-            <Col md={3}>
-                <Serial/>
-            </Col>
-            <Col md={3}>
-                <Switch on={this.state.console_state} name={"Console"}
-                  onToggle={this.consoleToggle} />
-            </Col>
-            <Col md={3}>
-                <Switch on={this.state.pause_state} name={"Pause"}
-                  onToggle={this.pauseToggle} />
-            </Col>
-          </Row>
-        </div>
+        <Buttons />
         <DisplayConsole lines={this.state.lines} />
       </div>
     );

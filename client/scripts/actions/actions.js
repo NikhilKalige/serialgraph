@@ -6,7 +6,10 @@ var actions = Reflux.createActions({
     "serialPortGet": {},
     "serialPortGot": {},
     "serialPortSet": {},
-    "serialPortData": {}
+    "serialPortData": {},
+
+    // buttons
+    "buttonToggle": {}
 });
 
 actions.serialPortGet.preEmit = function() {
@@ -29,6 +32,10 @@ socket.on('serialportdata', function(data) {
         console.log(data);
     })
     return "Nikhil";
+})*/
+
+/*actions.buttonToggle.listen(function(data) {
+    actions.buttonToggle(data);
 })*/
 
 module.exports = actions;
