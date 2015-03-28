@@ -6,6 +6,7 @@ var Button = require('react-bootstrap').Button;
 var Modal = require('react-bootstrap').Modal;
 var OverlayMixin = require('react-bootstrap').OverlayMixin;
 var Input = require('react-bootstrap').Input;
+var classNames = require('classnames');
 
 var Dropdown = React.createClass({
   render: function() {
@@ -38,6 +39,7 @@ var Serial = React.createClass({
 
   getInitialState: function () {
     return {
+      clicked: false,
       ports: SerialStore.ports,
       selected: {
         Ports: "",
@@ -74,6 +76,12 @@ var Serial = React.createClass({
     });
   },
 
+  clickHandler: function(e) {
+    this.setState({
+      clicked: !this.state.clicked
+    })
+  },
+
   submit: function(e) {
     e.preventDefault();
     if(this.state.temp.Ports == "") {
@@ -89,9 +97,15 @@ var Serial = React.createClass({
   },
 
   render: function () {
+    var classes = classNames(
+      "collapse-card",
+      {
+        "active": this.state.clicked
+      }
+    );
     return (
-      <div className="collapse-card">
-        <div className="collapse-card__heading">
+      <div className={classes}>
+        <div className="collapse-card__heading" onClick={this.clickHandler}>
           <h4 className="collapse-card__title">
             Serial port settings
           </h4>
@@ -113,32 +127,6 @@ var Serial = React.createClass({
       //<Button onClick={this.handleToggle} bsStyle="primary">Serial Config</Button>
     );
   },
-
-/*  renderOverlay: function () {
-    if(!this.state.isModalOpen) {
-      return <span/>;
-    }
-
-    return (
-      <Modal bsStyle="primary" onSubmit={this.submit} title="Modal heading" onRequestHide={this.handleToggle}>
-        <div className="modal-body">
-          <form className="form-horizontal">
-            <Dropdown title="Ports" change={this.onChange} selected={this.state.selected.Ports}
-              data={this.state.ports} />
-            <Dropdown title="Baud" change={this.onChange} selected={this.state.selected.Baud}
-              data={this.props.baud} />
-            <div className="form-group">
-              <Button type="submit" value="Submit" className="col-md-offset-8 col-md-2"
-                >Submit</Button>
-            </div>
-          </form>
-        </div>
-        <div className="modal-footer">
-          <Button onClick={this.handleToggle}>Close</Button>
-        </div>
-      </Modal>
-    );
-  }*/
 });
 
 module.exports = Serial;
