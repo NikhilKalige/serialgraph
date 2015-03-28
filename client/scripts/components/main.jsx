@@ -1,15 +1,17 @@
 var React = require('react');
-var Reflux = require("reflux");
+var Reflux = require('reflux');
 
-var Graph = require("./graph.jsx");
-var Console = require("./console.jsx");
-var Serial = require("./serial.jsx");
-var Buttons = require('./buttons.jsx');
-
-var SerialStore = require("../stores/serial");
-var DisplayConsole = require("./console-display.jsx");
 var Row = require('react-bootstrap').Row;
 var Col = require('react-bootstrap').Col;
+
+var SerialStore = require('../stores/serial');
+var DisplayConsole = require('./console-display.jsx');
+
+var Graph = require('./graph.jsx');
+var Console = require('./console.jsx');
+var Serial = require('./serial.jsx');
+var Buttons = require('./buttons.jsx');
+var Accordion = require('./accordion.jsx');
 
 var App = React.createClass({
   mixins: [
@@ -32,6 +34,7 @@ var App = React.createClass({
     return (
       <div>
         <Buttons />
+        <Accordion />
         <DisplayConsole lines={this.state.lines} />
       </div>
     );

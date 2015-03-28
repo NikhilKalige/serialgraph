@@ -33,14 +33,11 @@ var Dropdown = React.createClass({
 
 var Serial = React.createClass({
   mixins: [
-    OverlayMixin,
     Reflux.listenTo(SerialStore, 'onStoreUpdate')
   ],
 
-
   getInitialState: function () {
     return {
-      isModalOpen: false,
       ports: SerialStore.ports,
       selected: {
         Ports: "",
@@ -57,12 +54,6 @@ var Serial = React.createClass({
     return {
       baud: SerialStore.baud
     }
-  },
-
-  handleToggle: function () {
-    this.setState({
-      isModalOpen: !this.state.isModalOpen
-    });
   },
 
   componentWillMount: function() {
@@ -99,11 +90,31 @@ var Serial = React.createClass({
 
   render: function () {
     return (
-      <Button onClick={this.handleToggle} bsStyle="primary">Serial Config</Button>
+      <div className="collapse-card">
+        <div className="collapse-card__heading">
+          <h4 className="collapse-card__title">
+            Serial port settings
+          </h4>
+        </div>
+        <div className="collapse-card__body">
+          <form className="form-horizontal">
+            <Dropdown title="Ports" change={this.onChange} selected={this.state.selected.Ports}
+              data={this.state.ports} />
+            <Dropdown title="Baud" change={this.onChange} selected={this.state.selected.Baud}
+              data={this.props.baud} />
+            <div className="form-group">
+              <div className="col-xs-offset-2 col-xs-10">
+                <Button type="submit" value="Submit">Submit</Button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      //<Button onClick={this.handleToggle} bsStyle="primary">Serial Config</Button>
     );
   },
 
-  renderOverlay: function () {
+/*  renderOverlay: function () {
     if(!this.state.isModalOpen) {
       return <span/>;
     }
@@ -127,7 +138,7 @@ var Serial = React.createClass({
         </div>
       </Modal>
     );
-  }
+  }*/
 });
 
 module.exports = Serial;
