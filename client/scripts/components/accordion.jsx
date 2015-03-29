@@ -29,7 +29,7 @@ module.exports = React.createClass({
 
     return (
       <div className="container">
-        {content}
+        <Serial/>
       </div>
     );
   }

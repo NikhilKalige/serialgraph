@@ -11,7 +11,6 @@ var Graph = require('./graph.jsx');
 var Console = require('./console.jsx');
 var Serial = require('./serial.jsx');
 var Buttons = require('./buttons.jsx');
-var Accordion = require('./accordion.jsx');
 
 var App = React.createClass({
   mixins: [
@@ -34,7 +33,10 @@ var App = React.createClass({
     return (
       <div>
         <Buttons />
-        <Accordion />
+        <div className="container">
+          <Serial />
+          <Graph />
+        </div>
         <DisplayConsole lines={this.state.lines} />
       </div>
     );

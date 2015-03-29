@@ -106,9 +106,10 @@ var Serial = React.createClass({
     return (
       <div className={classes}>
         <div className="collapse-card__heading" onClick={this.clickHandler}>
-          <h4 className="collapse-card__title">
+          <h2 className="collapse-card__title">
+            <i className="fa fa-cogs"></i>
             Serial port settings
-          </h4>
+          </h2>
         </div>
         <div className="collapse-card__body">
           <form className="form-horizontal">
@@ -118,7 +119,7 @@ var Serial = React.createClass({
               data={this.props.baud} />
             <div className="form-group">
               <div className="col-xs-offset-2 col-xs-10">
-                <Button type="submit" value="Submit">Submit</Button>
+                <Button className="btn-primary" type="submit" value="Submit">Submit</Button>
               </div>
             </div>
           </form>

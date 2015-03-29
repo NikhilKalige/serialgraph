@@ -47,19 +47,11 @@ module.exports = React.createClass({
     return (
       <div className="container">
         <Row className="text-center">
-          <Col md={3}>
-            <Button onClick={this.buttonClick} title="graph" bsStyle="primary">
-              Graph Settings</Button>
-          </Col>
-          <Col md={3}>
-            <Button onClick={this.buttonClick} title="serial" bsStyle="primary">
-              Serial Config</Button>
-          </Col>
-          <Col md={3}>
+          <Col md={6}>
             <Switch on={this.state.console} name={"Console"}
               onToggle={this.onToggle} />
           </Col>
-          <Col md={3}>
+          <Col md={6}>
             <Switch on={this.state.pause} name={"Pause"}
               onToggle={this.onToggle} />
           </Col>
