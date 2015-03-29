@@ -27,7 +27,7 @@ actions.serialPortSet.listen(function(data) {
 });
 
 socket.on('serialportdata', function(data) {
-    // console.log(data);
+    console.log(data);
     actions.serialPortData(data);
 });
 

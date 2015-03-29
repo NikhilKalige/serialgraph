@@ -88,7 +88,7 @@ var Serial = React.createClass({
       this.state.temp.Ports = this.state.ports[0];
     }
     if(this.state.temp.Baud == "") {
-      this.state.temp.Baud = this.props.baud[0];
+      this.state.temp.Baud = this.props.baud[1];
     }
     this.setState({
       selected: this.state.temp
@@ -119,7 +119,7 @@ var Serial = React.createClass({
               data={this.props.baud} />
             <div className="form-group">
               <div className="col-xs-offset-2 col-xs-10">
-                <Button className="btn-primary" type="submit" value="Submit">Submit</Button>
+                <Button className="btn-primary" onClick={this.submit} value="Submit">Submit</Button>
               </div>
             </div>
           </form>

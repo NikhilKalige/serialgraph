@@ -20,7 +20,8 @@ module.exports = Reflux.createStore({
 
     gotSerialData: function(data) {
         if(this.data.data) {
-            var arr = data.split(this.data.data.delimiter);
+            //var arr = data.split(this.data.data.delimiter);
+            var arr = data.split(" ");
             for(var i=0; i<arr.length; i++) {
                 if(!this.data.graph_data[i]) {
                     this.data.graph_data[i] = [];

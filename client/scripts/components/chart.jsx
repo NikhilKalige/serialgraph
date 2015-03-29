@@ -29,7 +29,7 @@ var Chart = React.createClass({
     return (
       <div className="container well">
         <LineChart data={simpleLineChartData}
-          options={{datasetFill : false}}width="1150" height="500" redraw/>
+          options={{datasetFill : false, animation: false}}width="1150" height="500" redraw/>
       </div>
     );
   }

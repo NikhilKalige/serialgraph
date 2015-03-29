@@ -19,6 +19,8 @@ var reload = browserSync.reload;
 
 var paths = {
     "bootstrap": "./client/bower_components/bootstrap/less",
+    "fontawesome": "./client/bower_components/font-awesome/less",
+    "material": "./client/bower_components/bootstrap-material-design/less",
     "less": "./client/styles/main.less",
     "img_src": "./client/images/**/*",
     "img_dst": "./public/img",
@@ -31,7 +33,8 @@ var paths = {
 
 var deps = [
     "react",
-    "react-bootstrap"
+    "react-bootstrap",
+    "rickshaw"
 ];
 
 var less_error = function(err) {
@@ -49,7 +52,7 @@ gulp.task('styles', function() {
             errorHandler: less_error
         }))
         .pipe(less({
-            paths: [paths.bootstrap],
+            paths: [paths.bootstrap, paths.fontawesome, paths.material],
             //verbose: true
         }))
         .pipe($.autoprefixer('last 1 version'))

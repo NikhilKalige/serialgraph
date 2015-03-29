@@ -1,6 +1,13 @@
 @import 'bootstrap.less';
 @import 'bootstrap-switch';
+@import 'font-awesome';
+@import 'material.less';
 @import 'paper';
+@import 'rickshaw';
+
+html, head, body {
+    font-size: 16px;
+}
 
 body {
     background: #fafafa;
@@ -30,3 +37,26 @@ body {
     color: #000;
     padding: 0.2em 0;
 }
+
+.fa {
+    line-height: inherit;
+}
+
+.form-control.input-lg {
+    height: 46px !important;
+}
+
+.gsubmit {
+    pointer-events: all;
+    i {
+        color: black;
+        opacity: .6;
+        cursor: pointer;
+
+        &:hover {
+            opacity: .9;
+        }
+    }
+}
+
+

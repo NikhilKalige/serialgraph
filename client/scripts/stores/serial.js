@@ -10,13 +10,13 @@ module.exports = Reflux.createStore({
         this.graphs = [[]];
         this.baud = [4800, 9600, 19200, 38400, 56800, 115200];
         var self = this;
-        setInterval(function() {
+       /* setInterval(function() {
             var d = Math.round(Math.random() * 40);
             d = d.toString() + " ";
             d = d + Math.round(Math.random() * 40);
           self.data.push(d);
           self.trigger(d);
-        }, 1000);
+        }, 1000);*/
     },
 
     onSerialPortGot: function(data) {
@@ -26,6 +26,6 @@ module.exports = Reflux.createStore({
 
     onSerialPortData: function(data) {
         this.data.push(data);
-        this.trigger(this.data);
+        this.trigger(data);
     }
 });
