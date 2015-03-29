@@ -9,15 +9,18 @@ var actions = Reflux.createActions({
     "serialPortData": {},
 
     // buttons
-    "buttonToggle": {}
+    "buttonToggle": {},
+
+    //graphs
+    "graphUpdate": {}
 });
 
 actions.serialPortGet.preEmit = function() {
     socket.emit('serialport');
     socket.on('serialport', function(data) {
         actions.serialPortGot(data);
-    })
-}
+    });
+};
 
 actions.serialPortSet.listen(function(data) {
     socket.emit('serialportset', data);
@@ -26,7 +29,11 @@ actions.serialPortSet.listen(function(data) {
 socket.on('serialportdata', function(data) {
     // console.log(data);
     actions.serialPortData(data);
-})
+});
+
+actions.graphUpdate.listen(function(data) {
+    console.log(data);
+});
 /*actions.serialPortGet.listen(function() {
     $.get("/serialport", function(data) {
         console.log(data);

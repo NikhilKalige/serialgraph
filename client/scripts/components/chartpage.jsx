@@ -5,19 +5,18 @@ var Row = require('react-bootstrap').Row;
 var Col = require('react-bootstrap').Col;
 
 var SerialStore = require('../stores/serial');
-var DisplayConsole = require('./console-display.jsx');
 
 var Graph = require('./graph.jsx');
 var Console = require('./console.jsx');
 var Serial = require('./serial.jsx');
 var Buttons = require('./buttons.jsx');
 var Chart = require("./chart.jsx");
-var ChartsPage = require("./chartpage.jsx");
+
 var GraphStore = require("../stores/graph.js");
 
-var App = React.createClass({
+var ChartsPage = React.createClass({
   mixins: [
-    Reflux.listenTo(SerialStore, 'onSerialUpdate'),
+    Reflux.listenTo(GraphStore, 'onGraphUpdate')
   ],
 
   getInitialState: function() {
@@ -31,26 +30,30 @@ var App = React.createClass({
     };
   },
 
-  onSerialUpdate: function(data) {
+  onGraphUpdate: function(data) {
+    console.log(data);
     this.setState({
-      lines: data
+      graph_count: data.graph_count,
+      data: data.graph_data,
+      graphs: data.data.graph
     });
   },
+
   render: function() {
     var self = this;
+    var nodes = this.state.graphs.map(function(data, index) {
+      return (
+        <Chart name={data.title} data={self.state.data[index]}/>
+      );
+    });
 
     return (
       <div>
-        <Buttons />
-        <div className="container">
-          <Serial />
-          <Graph />
-        </div>
-        <ChartsPage />
+        {nodes}
       </div>
     );
   }
 });
 
- module.exports = App;
+ module.exports = ChartsPage;
 //<DisplayConsole lines={this.state.lines} />

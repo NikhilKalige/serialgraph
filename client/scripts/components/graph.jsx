@@ -9,10 +9,10 @@ var SmallForm = require('./small_form.jsx');
 var GraphForm = require('./graph_form.jsx');
 var Update = require('react/addons').addons.update;
 
-var Serial = React.createClass({
-  mixins: [
+var Graph = React.createClass({
+  /*mixins: [
     Reflux.listenTo(SerialStore, 'onStoreUpdate')
-  ],
+  ],*/
 
   getInitialState: function () {
     return {
@@ -32,12 +32,14 @@ var Serial = React.createClass({
     this.setState({
       temp: value
     });
+    Actions.graphUpdate(this.state);
   },
 
   clickHandler: function(e) {
     this.setState({
       clicked: !this.state.clicked
     });
+    Actions.graphUpdate(this.state);
   },
 
   addGraphHandler: function() {
@@ -58,14 +60,20 @@ var Serial = React.createClass({
       graph_count: ++this.state.graph_count,
       data: updated_data
     });
+    Actions.graphUpdate(this.state);
   },
 
   delimiterHandler: function() {
-    this.setState({
-      data: {
-        delimiter: this.refs.f1.getValue()
+    var updated_data = Update(this.state.data, {
+      delimiter: {
+        $set: this.refs.f1.getValue()
       }
     });
+
+    this.setState({
+      data: updated_data
+    });
+    Actions.graphUpdate(this.state);
   },
 
   varCountHandler: function() {
@@ -74,6 +82,7 @@ var Serial = React.createClass({
         variable_count: this.refs.f2.getValue()
       }
     });
+    Actions.graphUpdate(this.state);
   },
 
   graphSubmitHandler: function(index, data) {
@@ -87,6 +96,7 @@ var Serial = React.createClass({
         graph: graph
       }
     });
+    Actions.graphUpdate(this.state);
   },
 
   render: function () {
@@ -149,5 +159,5 @@ var Serial = React.createClass({
   },
 });
 
-module.exports = Serial;
+module.exports = Graph;
 
