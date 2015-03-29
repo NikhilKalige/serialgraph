@@ -5,6 +5,7 @@ var SerialStore = require('../stores/serial');
 var Button = require('react-bootstrap').Button;
 var Input = require('react-bootstrap').Input;
 var classNames = require('classnames');
+var SmallForm = require('./small_form.jsx');
 
 var Serial = React.createClass({
   mixins: [
@@ -14,6 +15,9 @@ var Serial = React.createClass({
   getInitialState: function () {
     return {
       clicked: false,
+      data: {
+        delimiter: ""
+      }
     };
   },
 
@@ -31,13 +35,26 @@ var Serial = React.createClass({
     });
   },
 
-  render: function () {
-    var classes = classNames(
-      "collapse-card",
-      {
-        "active": this.state.clicked
+  delimiterHandler: function() {
+    this.setState({
+      data: {
+        delimiter: this.refs.f1.getValue()
       }
-    );
+    });
+  },
+
+  render: function () {
+    var classes = classNames("collapse-card", {
+      "active": this.state.clicked
+    });
+
+    var delimiter = {
+      label: 'Delimiter',
+      submit: true,
+      handler: this.delimiterHandler,
+      data: this.state.data.delimiter
+    };
+
     return (
       <div className={classes}>
         <div className="collapse-card__heading" onClick={this.clickHandler}>
@@ -47,48 +64,7 @@ var Serial = React.createClass({
           </h4>
         </div>
         <div className="collapse-card__body">
-          <div className="row">
-            <div className="form-horizontal">
-              <div className="form-group">
-                <label for="inputEmail" className="col-md-offset-1 col-lg-2 input-lg control-label">Email</label>
-                <div className="form-group form-control-wrapper col-md-offset-3 col-md-5">
-                  <input className="form-control input-lg" type="text"></input>
-                  <span className="gsubmit form-control-feedback">
-                    <i className="fa fa-2x fa-arrow-right"></i>
-                  </span>
-                  <div className="hint">You should really write something here</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <form className="form-horizontal">
-            <div className="form-group">
-              <label for="inputEmail" className="col-lg-2 control-label">Email</label>
-              <div className="col-lg-10">
-                <input className="form-control" id="inputEmail"
-                  placeholder="Email" type="email"></input>
-              </div>
-            </div>
-
-          <div className="form-group">
-            <input className="form-control floating-label" id="focusedInput"
-              placeholder="Focus to show the hint"
-              data-hint="You should really write something here" type="text">
-            </input>
-          </div>
-
-            <div className="form-group">
-              <label className="control-label">Input addons</label>
-              <div className="input-group">
-                <span className="input-group-addon">$</span>
-                <input className="form-control" type="text"></input>
-                <span className="form-control-feedback">
-                  <i className="fa fa-arrow-right"></i>
-                </span>
-              </div>
-            </div>
-          </form>
+          <SmallForm {...delimiter} ref='f1'/>
         </div>
       </div>
     );
