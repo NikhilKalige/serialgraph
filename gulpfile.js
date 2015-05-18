@@ -16,6 +16,7 @@ var nodemon = require('gulp-nodemon');
 var source = require('vinyl-source-stream');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
+var sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
     "bootstrap": "./client/bower_components/bootstrap/less",
@@ -34,7 +35,8 @@ var paths = {
 var deps = [
     "react",
     "react-bootstrap",
-    "rickshaw"
+    "rickshaw",
+    "marty"
 ];
 
 var less_error = function(err) {
@@ -90,6 +92,8 @@ var scripts = function(options) {
             .on("error", browserify_error)
             .pipe(source(settings.name))
             .pipe(buffer())
+            .pipe(sourcemaps.init({loadMaps: true}))
+            .pipe(sourcemaps.write('./'))
             .pipe(gulp.dest(paths.js));
     };
 
