@@ -1,6 +1,8 @@
 'use strict';
 var React = require('react');
+var Marty = require('marty');
 var Reflux = require("reflux");
+var Immutable = require('immutable');
 
 var Col = require('react-bootstrap').Col;
 var Row = require('react-bootstrap').Row;
@@ -8,9 +10,10 @@ var Button = require('react-bootstrap').Button;
 var Switch = require("./switch.jsx");
 
 var Actions = require("../actions/actions");
-var ButtonStore = require("../stores/buttons");
+var ButtonStore = require("../stores/buttonsStore");
+var ButtonsActionCreator = require("../actions/buttonsActionCreators");
 
-module.exports = React.createClass({
+/*module.exports = React.createClass({
   mixins: [Reflux.listenTo(ButtonStore, 'onStoreUpdate')],
 
   getInitialState: function() {
@@ -58,5 +61,38 @@ module.exports = React.createClass({
         </Row>
       </div>
     );
+  }
+})*/
+
+
+var Buttons = React.createClass({
+  onToggle: function(name) {
+    ButtonsActionCreator.for(this).updateButtons(name);
+  },
+  
+  render: function() {
+    return (
+      <div className="container">
+        <Row className="text-center">
+          <Col md={6}>
+            <Switch on={this.props.buttons.get('console_open')} name={"Console"}
+              onToggle={this.onToggle} />
+          </Col>
+          <Col md={6}>
+            <Switch on={this.props.buttons.get('paused')} name={"Pause"}
+              onToggle={this.onToggle} />
+          </Col>
+        </Row>
+      </div>
+    );
+  },
+});
+
+module.exports = Marty.createContainer(Buttons, {
+  listenTo: ButtonStore,
+  fetch: {
+    buttons() {
+      return ButtonStore.for(this).getAll();
+    }
   }
 })

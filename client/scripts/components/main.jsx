@@ -7,12 +7,12 @@ var Col = require('react-bootstrap').Col;
 var SerialStore = require('../stores/serial');
 var DisplayConsole = require('./console-display.jsx');
 
-var Graph = require('./graph.jsx');
+// var Graph = require('./graph.jsx');
 var Console = require('./console.jsx');
-var Serial = require('./serial.jsx');
+// var Serial = require('./serial.jsx');
 var Buttons = require('./buttons.jsx');
 var Chart = require("./chart.jsx");
-var ChartsPage = require("./chartpage.jsx");
+// var ChartsPage = require("./chartpage.jsx");
 var GraphStore = require("../stores/graph.js");
 
 var App = React.createClass({
@@ -36,7 +36,7 @@ var App = React.createClass({
       lines: data
     });
   },
-  render: function() {
+/*  render: function() {
     var self = this;
 
     return (
@@ -47,6 +47,15 @@ var App = React.createClass({
           <Graph />
         </div>
         <ChartsPage />
+      </div>
+    );
+  }*/
+    render: function() {
+    var self = this;
+
+    return (
+      <div>
+        <Buttons />
       </div>
     );
   }
