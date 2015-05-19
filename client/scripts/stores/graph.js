@@ -1,6 +1,6 @@
 var Reflux = require('reflux');
 var Actions = require('../actions/actions');
-var SerialStore = require('./serial');
+var SerialStore = require('./serialStore');
 
 module.exports = Reflux.createStore({
     listenables: Actions,

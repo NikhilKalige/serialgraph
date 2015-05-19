@@ -4,21 +4,21 @@ var Reflux = require('reflux');
 var Row = require('react-bootstrap').Row;
 var Col = require('react-bootstrap').Col;
 
-var SerialStore = require('../stores/serial');
+var SerialStore = require('../stores/serialStore');
 var DisplayConsole = require('./console-display.jsx');
 
 // var Graph = require('./graph.jsx');
 var Console = require('./console.jsx');
-// var Serial = require('./serial.jsx');
+var Serial = require('./serial.jsx');
 var Buttons = require('./buttons.jsx');
 var Chart = require("./chart.jsx");
 // var ChartsPage = require("./chartpage.jsx");
-var GraphStore = require("../stores/graph.js");
+//var GraphStore = require("../stores/graph.js");
 
 var App = React.createClass({
-  mixins: [
+  /*mixins: [
     Reflux.listenTo(SerialStore, 'onSerialUpdate'),
-  ],
+  ],*/
 
   getInitialState: function() {
     var self = this;
@@ -56,6 +56,9 @@ var App = React.createClass({
     return (
       <div>
         <Buttons />
+        <div className="container">
+          <Serial />
+        </div>
       </div>
     );
   }
