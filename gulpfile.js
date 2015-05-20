@@ -35,7 +35,6 @@ var paths = {
 var deps = [
     "react",
     "react-bootstrap",
-    "rickshaw",
     "marty"
 ];
 

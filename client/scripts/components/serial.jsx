@@ -177,7 +177,7 @@ var Serial = React.createClass({
     var classes = classNames(
       "collapse-card",
       {
-        "active": this.state.clicked
+        "active": this.state.data.get('clicked')
       }
     );
     return (
