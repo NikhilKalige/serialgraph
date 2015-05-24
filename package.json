@@ -12,6 +12,7 @@
     "immutable": "^3.7.2",
     "lodash": "^3.8.0",
     "marty": "^0.9.13",
+    "marty-socket.io-state-source": "^0.1.0",
     "method-override": "~2.3.0",
     "morgan": "~1.5.0",
     "react-chartist": "^0.4.0",
@@ -72,19 +73,22 @@
     ]
   },
   "eslintConfig": {
-        "env": {
-            "browser": true,
-            "node": true
-        },
-        "ecmaFeatures": {
-            "blockBindings": true,
-            "forOf": true,
-            "jsx": true
-        },
-        "rules": {
-            "quotes": [2, "single"],
-            "eqeqeq": 0,
-            "strict": 0
-        }
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "ecmaFeatures": {
+      "blockBindings": true,
+      "forOf": true,
+      "jsx": true
+    },
+    "rules": {
+      "quotes": [
+        2,
+        "single"
+      ],
+      "eqeqeq": 0,
+      "strict": 0
     }
+  }
 }

@@ -53,10 +53,14 @@ module.exports = Marty.createStore({
         });
     },
     updateBaud: function(value) {
-        this.state = this.state.get('current').set('baud', value);
+        this.state = this.state.update('current', function(obj) {
+            return obj.set('baud', value);
+        });
     },
     updatePort: function(value) {
-        this.state = this.state.get('current').set('port', value);
+        this.state = this.state.update('current', function(obj) {
+            return obj.set('port', value);
+        });
     },
     updatePortList: function(list) {
         this.state = this.state.set('ports', Immutable.List(list));

@@ -143,7 +143,9 @@ var Serial = React.createClass({
   getInitialState: function () {
     return {
       data: Immutable.Map({
-        'clicked': false
+        'clicked': false,
+        'port': null,
+        'baud': null
       })
     }
   },
@@ -158,16 +160,25 @@ var Serial = React.createClass({
 
   onChange: function(dom) {
     if(dom.target.name == 'Ports')
-      SerialActionCreators.for(this).updatePort(dom.target.value);
+      this.state = this.state.data.set('port', dom.target.value);
     else
-      SerialActionCreators.for(this).updateBaud(dom.target.value);
+      this.state = this.state.data.set('baud', dom.target.value);
+    /*
+    SerialActionCreators.for(this).updatePort(dom.target.value);
+    else
+    SerialActionCreators.for(this).updateBaud(dom.target.value);*/
   },
 
   submit: function(event) {
     event.preventDefault();
-    var selection = SerialStore.getSelection();
-    if((selection.get('port') != null) && (selection.get('baud') != null)) {
-      this.state = this.state.set('clicked', false);
+    /** Update state if null */
+    this.state = this.state.data.set('port', this.state.data.get('port') || this.props.selected.get('port'));
+    this.state = this.state.data.set('baud', this.state.data.get('baud') || this.props.selected.get('baud'));
+
+    if((this.props.selected.get('port') != null) && (this.props.selected.get('baud') != null)) {
+      SerialActionCreators.for(this).updatePort(this.state.data.get('port'));
+      SerialActionCreators.for(this).updateBaud(this.state.data.get('baud'));
+      this.state = this.state.data.set('clicked', false);
       // Need to call Socket function
     }
     else {
