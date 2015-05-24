@@ -56,17 +56,29 @@ var App = React.createClass({
   }*/
     render: function() {
     var self = this;
+    var graph;
+    if(this.props.serialStatus)
+      graph = <Graph />;
 
     return (
       <div>
         <Buttons />
         <div className="container">
           <Serial />
+          {graph}
         </div>
       </div>
     );
   }
 });
 
- module.exports = App;
 //<DisplayConsole lines={this.state.lines} />
+
+module.exports = Marty.createContainer(App, {
+  listenTo: SerialStore,
+  fetch: {
+    serialStatus() {
+      return SerialStore.for(this).connectionStatus();
+    },
+  }
+});

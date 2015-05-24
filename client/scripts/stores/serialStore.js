@@ -49,7 +49,8 @@ module.exports = Marty.createStore({
             current: Immutable.Map({
                 port: null,
                 baud: null
-            })
+            }),
+            connected: false
         });
     },
     updateBaud: function(value) {
@@ -81,6 +82,14 @@ module.exports = Marty.createStore({
             id: 'serial-select',
             locally: function() {
                 return this.state.get('current');
+            }
+        });
+    },
+    connectionStatus: function() {
+        return this.fetch({
+            id: 'serial-connect',
+            locally: function() {
+                return this.state.get('connected');
             }
         });
     }
