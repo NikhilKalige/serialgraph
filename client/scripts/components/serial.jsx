@@ -9,6 +9,8 @@ var OverlayMixin = require('react-bootstrap').OverlayMixin;
 var Input = require('react-bootstrap').Input;
 var classNames = require('classnames');
 var Marty = require("marty");
+var SerialActionCreators = require('../actions/serialActionCreators');
+
 window.Marty = Marty;
 var Dropdown = React.createClass({
   render: function() {
@@ -17,7 +19,7 @@ var Dropdown = React.createClass({
         <option value={value}>{value}</option>
       );
     })
-  
+
     return (
       <div className="form-group">
         <label className="control-label col-xs-2">
@@ -156,9 +158,9 @@ var Serial = React.createClass({
 
   onChange: function(dom) {
     if(dom.target.name == 'Ports')
-      SerialActionCreator.for(this).updatePort(dom.target.value);
+      SerialActionCreators.for(this).updatePort(dom.target.value);
     else
-      SerialActionCreator.for(this).updateBaud(dom.target.value);
+      SerialActionCreators.for(this).updateBaud(dom.target.value);
   },
 
   submit: function(event) {

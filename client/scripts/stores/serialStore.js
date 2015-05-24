@@ -36,11 +36,12 @@ var SerialContants = require('../constants/constants').SerialConstants;
 
 module.exports = Marty.createStore({
     id: 'Serial Config',
+    remoteFetch: 0,
     handlers: {
         updatePort: SerialContants.UPDATE_PORT,
-        updateBaud: SerialContants.UPDATE_BAUD
+        updateBaud: SerialContants.UPDATE_BAUD,
+        updatePortList: SerialContants.UPDATE_PORT_LIST
     },
-
     getInitialState: function() {
         return Immutable.Map({
             ports: Immutable.List(),
@@ -49,17 +50,17 @@ module.exports = Marty.createStore({
                 port: null,
                 baud: null
             })
-        })
+        });
     },
-
     updateBaud: function(value) {
         this.state = this.state.get('current').set('baud', value);
     },
-
     updatePort: function(value) {
         this.state = this.state.get('current').set('port', value);
     },
-
+    updatePortList: function(list) {
+        this.state = this.state.set('ports', Immutable.List(list));
+    },
     getOptions: function() {
         return this.fetch({
             id: 'serial-options',
@@ -71,7 +72,6 @@ module.exports = Marty.createStore({
             }
         });
     },
-
     getSelection: function() {
         return this.fetch({
             id: 'serial-select',
@@ -80,6 +80,5 @@ module.exports = Marty.createStore({
             }
         });
     }
-
 });
 

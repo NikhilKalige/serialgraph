@@ -6,6 +6,7 @@ var Col = require('react-bootstrap').Col;
 
 var SerialStore = require('../stores/serialStore');
 var DisplayConsole = require('./console-display.jsx');
+var SerialSocket = require('../sources/serialSocket');
 
 // var Graph = require('./graph.jsx');
 var Console = require('./console.jsx');
@@ -14,6 +15,9 @@ var Buttons = require('./buttons.jsx');
 var Chart = require("./chart.jsx");
 // var ChartsPage = require("./chartpage.jsx");
 //var GraphStore = require("../stores/graph.js");
+
+
+SerialSocket.triggerGetPorts();
 
 var App = React.createClass({
   /*mixins: [

@@ -6,7 +6,8 @@ var ButtonConstants = Marty.createConstants([
 
 var SerialConstants = Marty.createConstants([
     'UPDATE_PORT',
-    'UPDATE_BAUD'
+    'UPDATE_BAUD',
+    'UPDATE_PORT_LIST'
 ]);
 
 module.exports = {
