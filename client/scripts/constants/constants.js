@@ -10,7 +10,13 @@ var SerialConstants = Marty.createConstants([
     'UPDATE_PORT_LIST'
 ]);
 
+var GraphConstants = Marty.createConstants([
+    'UPDATE_CONFIG',
+    'UPDATE_VARIABLECOUNT'
+]);
+
 module.exports = {
     ButtonConstants: ButtonConstants,
-    SerialConstants: SerialConstants
+    SerialConstants: SerialConstants,
+    GraphConstants: GraphConstants
 };

@@ -8,7 +8,7 @@ var SerialStore = require('../stores/serialStore');
 var DisplayConsole = require('./console-display.jsx');
 var SerialSocket = require('../sources/serialSocket');
 
-// var Graph = require('./graph.jsx');
+var Graph = require('./graph.jsx');
 var Console = require('./console.jsx');
 var Serial = require('./serial.jsx');
 var Buttons = require('./buttons.jsx');

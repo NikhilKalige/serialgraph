@@ -1,18 +1,20 @@
 var React = require('react');
 var Reflux = require('reflux');
 var Actions = require('../actions/actions');
-var SerialStore = require('../stores/serial');
 var Button = require('react-bootstrap').Button;
 var Input = require('react-bootstrap').Input;
 var classNames = require('classnames');
 var SmallForm = require('./small_form.jsx');
 var GraphForm = require('./graph_form.jsx');
 var Update = require('react/addons').addons.update;
-
-var Graph = React.createClass({
-  /*mixins: [
-    Reflux.listenTo(SerialStore, 'onStoreUpdate')
-  ],*/
+var Marty = require("marty");
+var Immutable = require('immutable');
+var GraphStore = require('../stores/graphStore');
+var GraphActionCreators = require('../actions/graphActionCreators');
+/*var Graph = React.createClass({
+  //mixins: [
+  //  Reflux.listenTo(SerialStore, 'onStoreUpdate')
+  //],
 
   getInitialState: function () {
     return {
@@ -159,5 +161,103 @@ var Graph = React.createClass({
   },
 });
 
-module.exports = Graph;
+module.exports = Graph;*/
 
+var Graph = React.createClass({
+  getInitialState: function() {
+    return {
+      data: Immutable.Map({
+        delimiter: null,
+        sampleLine: null,
+        clicked: false
+      })
+    };
+  },
+
+  clickHandler: function(e) {
+    this.setState(function(prev) {
+      return {
+        data: prev.data.set('clicked', !prev.data.get('clicked'))
+      }
+    })
+  },
+
+  onChange: function(event) {
+    var name = event.target.id;
+    var value = event.target.value;
+    this.setState(function(prev) {
+      return {
+        data: prev.data.set(name, value)
+      };
+    });
+  },
+
+  submit: function(event) {
+    event.preventDefault();
+    this.state.data = this.state.data.set('delimiter',
+        this.state.data.get('delimiter') || this.props.config.get('delimiter'));
+    this.state.data = this.state.data.set('sampleLine',
+      this.state.data.get('sampleLine') || this.props.config.get('sampleLine'));
+
+    if((this.state.data.get('delimiter') != null) && (this.state.data.get('sampleLine') != null)) {
+      this.state.data = this.state.data.set('clicked', false);
+      GraphActionCreators.for(this).updateConfig(this.state.data);
+      // Need to call Socket function
+    }
+    else {
+      // Display error message
+    }
+
+  },
+
+  render: function() {
+    var delimiter = this.state.data.get('delimiter') || this.props.config.get('delimiter');
+    var sampleLine = this.state.data.get('sampleLine') || this.props.config.get('sampleLine');
+    var classes = classNames('collapse-card', {
+      'active': this.state.data.get('clicked')
+    });
+
+    return (
+      <div className={classes}>
+        <div className="collapse-card__heading" onClick={this.clickHandler}>
+          <h4 className="collapse-card__title">
+            <i className="fa fa-bar-chart"></i>
+            Graph settings
+          </h4>
+        </div>
+        <div className="collapse-card__body">
+          <form className="form-horizontal">
+            <div className="form-group">
+              <label htmlFor="delimiter" className="col-lg-2 control-label">Delimiter</label>
+              <div className="col-lg-10">
+                <input type="text" className="form-control" id="delimiter" onChange={this.onChange}
+                  placeholder={delimiter ? delimiter : 'Delimiter'}></input>
+              </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="sampleLine" className="col-lg-2 control-label">Sample Line</label>
+              <div className="col-lg-10">
+                <input type="text" className="form-control" id="sampleLine" onChange={this.onChange}
+                  placeholder={sampleLine ? sampleLine : 'Ex: Var1:delim:Var2:delim:Var3'}></input>
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-xs-offset-2 col-xs-10">
+                <Button className="btn-primary" onClick={this.submit} value="Submit">Submit</Button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+});
+
+module.exports = Marty.createContainer(Graph, {
+  listenTo: GraphStore,
+  fetch: {
+    config() {
+      return GraphStore.for(this).getConfig();
+    }
+  }
+});
