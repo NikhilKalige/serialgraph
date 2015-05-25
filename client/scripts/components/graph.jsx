@@ -207,7 +207,28 @@ var Graph = React.createClass({
     else {
       // Display error message
     }
+  },
 
+  convertToString: function(str) {
+    var name;
+    var re = /^ *$/;
+
+    if(re.exec() !== null) {
+      // contains only spaces
+      for(var i=0; i<length(str); i++)
+        name += 'space ';
+      return name;
+    }
+    if(str[0] == ' ') {
+      name = 'space ';
+
+      if(str.length > 1)
+        name += str.slice(1);
+    }
+    else
+      name = str;
+
+    return name;
   },
 
   render: function() {
@@ -217,12 +238,20 @@ var Graph = React.createClass({
       'active': this.state.data.get('clicked')
     });
 
+    var name = "Graph Settings";
+    var set_delimiter = this.props.config.get('delimiter');
+    if((set_delimiter !== null) && (set_delimiter.length > 0)) {
+      name+= 'Delimiter: ' + this.convertToString(set_delimiter);
+      if(this.props.config.get('sampleLine') !== null)
+        name+= '    Variable Count: ' + this.props.config.get('sampleLine').split(set_delimiter).length;
+    }
+
     return (
       <div className={classes}>
         <div className="collapse-card__heading" onClick={this.clickHandler}>
           <h4 className="collapse-card__title">
             <i className="fa fa-bar-chart"></i>
-            Graph settings
+            {name}
           </h4>
         </div>
         <div className="collapse-card__body">
