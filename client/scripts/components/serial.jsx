@@ -172,13 +172,13 @@ var Serial = React.createClass({
   submit: function(event) {
     event.preventDefault();
     /** Update state if null */
-    this.state = this.state.data.set('port', this.state.data.get('port') || this.props.selected.get('port'));
-    this.state = this.state.data.set('baud', this.state.data.get('baud') || this.props.selected.get('baud'));
+    this.state.data = this.state.data.set('port', this.state.data.get('port') || this.props.selected.get('port'));
+    this.state.data = this.state.data.set('baud', this.state.data.get('baud') || this.props.selected.get('baud'));
 
-    if((this.props.selected.get('port') != null) && (this.props.selected.get('baud') != null)) {
+    if((this.state.data.get('port') != null) && (this.state.data.get('baud') != null)) {
       SerialActionCreators.for(this).updatePort(this.state.data.get('port'));
       SerialActionCreators.for(this).updateBaud(this.state.data.get('baud'));
-      this.state = this.state.data.set('clicked', false);
+      this.state.data = this.state.data.set('clicked', false);
       // Need to call Socket function
     }
     else {

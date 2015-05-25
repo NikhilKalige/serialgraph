@@ -36,7 +36,6 @@ var SerialContants = require('../constants/constants').SerialConstants;
 
 module.exports = Marty.createStore({
     id: 'Serial Config',
-    remoteFetch: 0,
     handlers: {
         updatePort: SerialContants.UPDATE_PORT,
         updateBaud: SerialContants.UPDATE_BAUD,
@@ -50,7 +49,7 @@ module.exports = Marty.createStore({
                 port: null,
                 baud: null
             }),
-            connected: false
+            connected: true
         });
     },
     updateBaud: function(value) {
