@@ -4,8 +4,9 @@ var port;
 
 module.exports = {
     list: function(socket) {
+        var count = 0;
         socket.on('serialport', function() {
-            SerialPort.list(function(err, ports) {
+            /*SerialPort.list(function(err, ports) {
                 var list = [];
                 if(err)
                     return;
@@ -15,7 +16,20 @@ module.exports = {
                     });
                     socket.emit('serialport', list);
                 }
-            });
+            });*/
+            /** Testing without any device connected */
+            if(count == 0)
+                socket.emit('serialport', ['dev/ttyUSB0', '/dev/ttyUSB1']);
+            else if(count == 1)
+                socket.emit('serialport', ['dev/ttyUSB7', '/dev/ttyUSB1', '/dev/ttyUSB2']);
+            else if(count == 2)
+                socket.emit('serialport', ['dev/ttyUSB2', '/dev/ttyUSB1', '/dev/ttyUSB8']);
+            else {
+                socket.emit('serialport', ['dev/ttyACM0', '/dev/ttyUSB12']);
+                count = 0;
+            }
+
+            count++;
         });
     },
 
