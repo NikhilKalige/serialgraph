@@ -18,6 +18,7 @@ var Serial = require('./serial.jsx');
 var Buttons = require('./buttons.jsx');
 var Chart = require("./chart.jsx");
 var AddGraph = require('./add_graph_button.jsx');
+var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 // var ChartsPage = require("./chartpage.jsx");
 //var GraphStore = require("../stores/graph.js");
 
@@ -25,6 +26,7 @@ var AddGraph = require('./add_graph_button.jsx');
 SerialSocket.triggerGetPorts();
 
 var App = React.createClass({
+  mixins: [PureRenderMixin],
   /*mixins: [
     Reflux.listenTo(SerialStore, 'onSerialUpdate'),
   ],*/
@@ -70,7 +72,7 @@ var App = React.createClass({
           {this.props.graphCount ? <AddGraph /> : false}
           {(this.props.graphCount
               ? this.props.chartConfig.map(function(value, key) {
-                  return <GraphForm key={key} config={value} />
+                  return <GraphForm id={key} chartData={value} />
                 })
               : false
           )}

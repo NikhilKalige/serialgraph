@@ -35,7 +35,13 @@ var paths = {
 var deps = [
     "react",
     "react-bootstrap",
-    "marty"
+    "marty",
+    "shortid",
+    "immutable",
+    "reflux",
+    "classnames",
+    "marty-socket.io-state-source",
+    "react-chartjs"
 ];
 
 var less_error = function(err) {

@@ -17,7 +17,8 @@ var GraphConstants = Marty.createConstants([
 
 var ChartConstants = Marty.createConstants([
     'ADD_GRAPH_FORM',
-    'ADD_GRAPH'
+    'ADD_GRAPH',
+    'UPDATE_CHART_CONFIG'
 ]);
 
 module.exports = {

@@ -4,18 +4,40 @@ var SmallForm = require('./small_form.jsx');
 var Marty = require("marty");
 var Immutable = require('immutable');
 var Button = require('react-bootstrap').Button;
+var Chart = require('../utils/utils');
+var GraphFormActionCreators = require('../actions/graphFormActionCreators');
 
 var GraphForm = React.createClass({
   getInitialState: function() {
     return {
-      clicked: false
-    }
+      data: Immutable.Map({
+        clicked: false,
+        config: null
+      })
+    };
+  },
+
+  updateState: function(props) {
+    var nextProps = props ? props : this.props;
+    this.setState(function(prev) {
+      return {
+        data: prev.data.set('config', nextProps.chartData)
+      };
+    });
+  },
+
+  componentWillMount: function() {
+    this.updateState();
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.updateState(nextProps);
   },
 
   clickHandler: function() {
     this.setState(function(prev) {
       return {
-        clicked: !prev.clicked
+        data: prev.data.set('clicked', !prev.data.get('clicked'))
       };
     });
   },
@@ -29,18 +51,67 @@ var GraphForm = React.createClass({
     };
   },
 
-  submitHandler: function(event) {
-    this.props.handler(this.getValue());
+  onChange: function(event) {
+    var name = event.target.id;
+    var value = event.target.value;
+    this.setState(function(prev) {
+      var config;
+      config = prev.data.get('config').set(name, value);
+      return {
+        data: prev.data.set('config', config)
+      };
+    });
+  },
+
+  onVarChange: function(event) {
+    var value = event.target.value;
+    this.setState(function(prev) {
+      var config, arr;
+      if(value == '')
+        arr = [];
+      else {
+        arr = value.split(',').map(function(v) {
+          return v.replace(/ /g, '');
+        });
+      }
+      config = prev.data.get('config').set('variables', arr);
+      return {
+        data: prev.data.set('config', config)
+      };
+    });
+  },
+
+  submit: function(event) {
+    event.preventDefault();
+    var config, variables;
+    config = this.state.data.get('config');
+    if((config.get('title') == '') || (config.get('xlabel') == '') || (config.get('ylabel') == ''))
+      return;
+
+    variables = config.get('variables');
+    if(variables.length == 0)
+      return;
+
+    config = config.set('variables', variables);
+    GraphFormActionCreators.for(this).updateConfig(this.props.id, config);
+
+    this.setState(function(prev) {
+      return {
+        data: prev.data.set('clicked', false)
+      };
+    });
   },
 
   render: function() {
     var classes = classNames('collapse-card', {
-      'active': this.state.clicked
+      'active': this.state.data.get('clicked')
     });
-    var title = this.props.config.get('title');
-    var xlabel = this.props.config.get('xlabel');
-    var ylabel = this.props.config.get('ylabel');
-    var variables = this.props.config.get('variables');
+    var title = this.state.data.get('config').get('title');
+    var xlabel = this.state.data.get('config').get('xlabel');
+    var ylabel = this.state.data.get('config').get('ylabel');
+    if(this.state.data.get('config').get('variables').length) {
+      var variables = this.state.data.get('config').get('variables').join(', ');
+    }
 
     return (
       <div className={classes}>
@@ -76,7 +147,7 @@ var GraphForm = React.createClass({
             <div className="form-group">
               <label htmlFor="variables" className="col-lg-2 control-label">Variables</label>
               <div className="col-lg-10">
-                <input type="text" className="form-control" id="variables" onChange={this.onChange}
+                <input type="text" className="form-control" id="variables" onChange={this.onVarChange}
                   placeholder={variables ? variables : 'Var1, Var2'}></input>
               </div>
             </div>
