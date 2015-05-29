@@ -5,14 +5,19 @@ var Row = require('react-bootstrap').Row;
 var Col = require('react-bootstrap').Col;
 
 var SerialStore = require('../stores/serialStore');
+var GraphStore = require('../stores/graphStore');
+var ChartStore = require('../stores/chartsStore');
+
 var DisplayConsole = require('./console-display.jsx');
 var SerialSocket = require('../sources/serialSocket');
 
 var Graph = require('./graph.jsx');
+var GraphForm = require('./graph_form.jsx');
 var Console = require('./console.jsx');
 var Serial = require('./serial.jsx');
 var Buttons = require('./buttons.jsx');
 var Chart = require("./chart.jsx");
+var AddGraph = require('./add_graph_button.jsx');
 // var ChartsPage = require("./chartpage.jsx");
 //var GraphStore = require("../stores/graph.js");
 
@@ -54,18 +59,21 @@ var App = React.createClass({
       </div>
     );
   }*/
-    render: function() {
+  render: function() {
     var self = this;
-    var graph;
-    if(this.props.serialStatus)
-      graph = <Graph />;
-
     return (
       <div>
         <Buttons />
         <div className="container">
           <Serial />
-          {graph}
+          {this.props.serialStatus ? <Graph /> : false}
+          {this.props.graphCount ? <AddGraph /> : false}
+          {(this.props.graphCount
+              ? this.props.chartConfig.map(function(value, key) {
+                  return <GraphForm key={key} config={value} />
+                })
+              : false
+          )}
         </div>
       </div>
     );
@@ -75,10 +83,16 @@ var App = React.createClass({
 //<DisplayConsole lines={this.state.lines} />
 
 module.exports = Marty.createContainer(App, {
-  listenTo: SerialStore,
+  listenTo: [SerialStore, GraphStore, ChartStore],
   fetch: {
     serialStatus() {
       return SerialStore.for(this).connectionStatus();
     },
+    graphCount() {
+      return GraphStore.for(this).getVariableCount();
+    },
+    chartConfig() {
+      return ChartStore.for(this).getCharts();
+    }
   }
 });

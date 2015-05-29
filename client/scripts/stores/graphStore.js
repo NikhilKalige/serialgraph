@@ -45,14 +45,17 @@ module.exports = Marty.createStore({
         return Immutable.Map({
             delimiter: ' ',
             sampleLine: null,
-            variableCount: 0
+            variableCount: 1
         });
     },
     updateConfig: function(config) {
         this.state = this.state.set('delimiter', config.get('delimiter'));
         this.state = this.state.set('sampleLine', config.get('sampleLine'));
+        this.updateVarCount();
     },
-    updateVarCount: function(count) {
+    updateVarCount: function() {
+        var count;
+        count = this.state.get('sampleLine').split(this.state.get('delimiter')).length;
         this.state = this.state.set('variableCount', count);
     },
     getConfig: function() {
@@ -60,6 +63,14 @@ module.exports = Marty.createStore({
             id: 'graph-config',
             locally: function() {
                 return this.state;
+            }
+        });
+    },
+    getVariableCount: function() {
+        return this.fetch({
+            id: 'graph-count',
+            locally: function() {
+                return this.state.get('variableCount');
             }
         });
     }

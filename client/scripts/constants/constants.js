@@ -15,8 +15,14 @@ var GraphConstants = Marty.createConstants([
     'UPDATE_VARIABLECOUNT'
 ]);
 
+var ChartConstants = Marty.createConstants([
+    'ADD_GRAPH_FORM',
+    'ADD_GRAPH'
+]);
+
 module.exports = {
     ButtonConstants: ButtonConstants,
     SerialConstants: SerialConstants,
-    GraphConstants: GraphConstants
+    GraphConstants: GraphConstants,
+    ChartConstants: ChartConstants
 };
