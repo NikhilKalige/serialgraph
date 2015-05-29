@@ -9,7 +9,7 @@ module.exports = React.createClass({
     render: function() {
         return (
             <div className='container'>
-                <button class="btn btn-primary btn-raised" onClick={this.onClick}>Add Graph</button>
+                <button className="btn btn-primary btn-raised" onClick={this.onClick}>Add Graph</button>
             </div>
         );
     }
