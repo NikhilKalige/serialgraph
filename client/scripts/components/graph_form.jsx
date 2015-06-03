@@ -6,8 +6,11 @@ var Immutable = require('immutable');
 var Button = require('react-bootstrap').Button;
 var Chart = require('../utils/utils');
 var GraphFormActionCreators = require('../actions/graphFormActionCreators');
+var Select = require('react-select');
+var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
 var GraphForm = React.createClass({
+  mixins: [PureRenderMixin],
   getInitialState: function() {
     return {
       data: Immutable.Map({
@@ -63,18 +66,23 @@ var GraphForm = React.createClass({
     });
   },
 
-  onVarChange: function(event) {
-    var value = event.target.value;
+  onVarChange: function(value) {
+    var uniArr;
+    value = value.split(',');
+
     this.setState(function(prev) {
       var config, arr;
-      if(value == '')
-        arr = [];
-      else {
-        arr = value.split(',').map(function(v) {
-          return v.replace(/ /g, '');
-        });
-      }
-      config = prev.data.get('config').set('variables', arr);
+      config = prev.data.get('config');
+
+      value.forEach(function(v, index) {
+        value[index] = parseInt(v);
+      });
+
+      uniArr = value.filter(function(item, pos, self) {
+        return self.indexOf(item) == pos;
+      });
+
+      config = config.set('variables', Immutable.List(uniArr));
       return {
         data: prev.data.set('config', config)
       };
@@ -106,11 +114,16 @@ var GraphForm = React.createClass({
     var classes = classNames('collapse-card', {
       'active': this.state.data.get('clicked')
     });
+    var ops = [];
+    for(var i = 1; i <= this.props.count; i++) {
+      ops.push({label: i.toString(), value: i.toString()});
+    }
+
     var title = this.state.data.get('config').get('title');
     var xlabel = this.state.data.get('config').get('xlabel');
     var ylabel = this.state.data.get('config').get('ylabel');
-    if(this.state.data.get('config').get('variables').length) {
-      var variables = this.state.data.get('config').get('variables').join(', ');
+    if(this.state.data.get('config').get('variables').size) {
+      var variables = this.state.data.get('config').get('variables').join(',');
     }
 
     return (
@@ -145,10 +158,11 @@ var GraphForm = React.createClass({
               </div>
             </div>
             <div className="form-group">
-              <label htmlFor="variables" className="col-lg-2 control-label">Variables</label>
+              <label htmlFor="title" className="col-lg-2 control-label">Delimiter</label>
               <div className="col-lg-10">
-                <input type="text" className="form-control" id="variables" onChange={this.onVarChange}
-                  placeholder={variables ? variables : 'Var1, Var2'}></input>
+                <Select className="form-control" name="form-field-name" options={ops} multi={true}
+                  placeholder={"Select variables to plot"} onChange={this.onVarChange} value={variables}
+                />
               </div>
             </div>
             <div className="form-group">

@@ -3,7 +3,7 @@ var Chart = Immutable.Record({
     title: '',
     xlabel: '',
     ylabel: '',
-    variables: [],
+    variables: Immutable.List(),
     valid: false
 });
 

@@ -4,6 +4,10 @@
 @import 'material.less';
 @import 'paper';
 @import 'rickshaw';
+@import 'default.less';
+
+
+@select-input-border-radius:       0px;
 
 html, head, body {
     font-size: 16px;
@@ -59,4 +63,16 @@ body {
     }
 }
 
+.Select-input {
+    display: inline-block;
+}
 
+
+.is-focused:not(.is-open) > .Select-control {
+    box-shadow: none !important;
+}
+
+.Select-control {
+    border: 0px;
+    border-bottom: 1px solid #ccc;
+}

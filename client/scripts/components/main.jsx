@@ -71,9 +71,9 @@ var App = React.createClass({
           {this.props.serialStatus ? <Graph /> : false}
           {this.props.graphCount ? <AddGraph /> : false}
           {(this.props.graphCount
-              ? this.props.chartConfig.map(function(value, key) {
-                  return <GraphForm id={key} chartData={value} />
-                })
+              ? this.props.chartConfig.map((function(value, key) {
+                  return <GraphForm id={key} chartData={value} count={this.props.graphCount}/>
+                }).bind(this))
               : false
           )}
         </div>
