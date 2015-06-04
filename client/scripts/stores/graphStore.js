@@ -76,6 +76,14 @@ module.exports = Marty.createStore({
                 return this.state.get('variableCount');
             }
         });
+    },
+    getDelimiter: function() {
+        return this.fetch({
+            id: 'graph-delim',
+            locally: function() {
+                return this.state.get('delimiter');
+            }
+        });
     }
 });
 
