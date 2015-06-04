@@ -21,9 +21,14 @@ var ChartConstants = Marty.createConstants([
     'UPDATE_CHART_CONFIG'
 ]);
 
+var DataConstants = Marty.createConstants([
+    'UPDATE_DATA'
+]);
+
 module.exports = {
     ButtonConstants: ButtonConstants,
     SerialConstants: SerialConstants,
     GraphConstants: GraphConstants,
-    ChartConstants: ChartConstants
+    ChartConstants: ChartConstants,
+    DataConstants: DataConstants
 };
