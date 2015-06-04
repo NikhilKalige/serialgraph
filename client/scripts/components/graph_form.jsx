@@ -137,7 +137,7 @@ var GraphForm = React.createClass({
         <div className="collapse-card__body">
           <form className="form-horizontal">
             <div className="form-group">
-              <label htmlFor="title" className="col-lg-2 control-label">Delimiter</label>
+              <label htmlFor="title" className="col-lg-2 control-label">Title</label>
               <div className="col-lg-10">
                 <input type="text" className="form-control" id="title" onChange={this.onChange}
                   placeholder={title ? title : 'Title'}></input>
@@ -158,7 +158,7 @@ var GraphForm = React.createClass({
               </div>
             </div>
             <div className="form-group">
-              <label htmlFor="title" className="col-lg-2 control-label">Delimiter</label>
+              <label htmlFor="title" className="col-lg-2 control-label">Variables</label>
               <div className="col-lg-10">
                 <Select className="form-control" name="form-field-name" options={ops} multi={true}
                   placeholder={"Select variables to plot"} onChange={this.onVarChange} value={variables}

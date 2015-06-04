@@ -243,7 +243,8 @@ var Graph = React.createClass({
     if((set_delimiter !== null) && (set_delimiter.length > 0)) {
       name+= 'Delimiter: ' + this.convertToString(set_delimiter);
       if(this.props.config.get('sampleLine') !== null)
-        name+= '    Variable Count: ' + this.props.config.get('sampleLine').split(set_delimiter).length;
+        name += '    Variable Count: ' + this.props.config.get('sampleLine')
+          .split(set_delimiter).filter(Boolean).length;
     }
 
     return (

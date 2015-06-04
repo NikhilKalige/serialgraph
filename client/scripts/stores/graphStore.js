@@ -45,7 +45,7 @@ module.exports = Marty.createStore({
         return Immutable.Map({
             delimiter: ' ',
             sampleLine: null,
-            variableCount: 1
+            variableCount: 0
         });
     },
     updateConfig: function(config) {
@@ -55,7 +55,10 @@ module.exports = Marty.createStore({
     },
     updateVarCount: function() {
         var count;
-        count = this.state.get('sampleLine').split(this.state.get('delimiter')).length;
+        count = this.state.get('sampleLine')
+            .split(this.state.get('delimiter'))
+            .filter(Boolean)
+            .length;
         this.state = this.state.set('variableCount', count);
     },
     getConfig: function() {
