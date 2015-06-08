@@ -7,6 +7,7 @@ var Col = require('react-bootstrap').Col;
 var SerialStore = require('../stores/serialStore');
 var GraphStore = require('../stores/graphStore');
 var ChartStore = require('../stores/chartsStore');
+var DataStore = require('../stores/dataStore');
 
 var DisplayConsole = require('./console-display.jsx');
 var SerialSocket = require('../sources/serialSocket');
@@ -63,19 +64,27 @@ var App = React.createClass({
   }*/
   render: function() {
     var self = this;
+    var graph_forms = [];
+    var charts = [];
+
+    graph_forms = this.props.chartConfig.map((function(value, key) {
+      return <GraphForm id={key} chartData={value} count={this.props.varCount}/>
+    }).bind(this));
+
+    charts = this.props.chartConfig.map((function(value, key) {
+      if(value.get('valid'))
+        return <Chart id={key} chartData={value} plotData={this.props.plotData}/>
+    }).bind(this));
+
     return (
       <div>
         <Buttons />
         <div className="container">
           <Serial />
           {this.props.serialStatus ? <Graph /> : false}
-          {this.props.graphCount ? <AddGraph /> : false}
-          {(this.props.graphCount
-              ? this.props.chartConfig.map((function(value, key) {
-                  return <GraphForm id={key} chartData={value} count={this.props.graphCount}/>
-                }).bind(this))
-              : false
-          )}
+          {this.props.varCount ? <AddGraph /> : false}
+          {this.props.varCount ? graph_forms: false}
+          {this.props.varCount ? charts: false}
         </div>
       </div>
     );
@@ -85,16 +94,19 @@ var App = React.createClass({
 //<DisplayConsole lines={this.state.lines} />
 
 module.exports = Marty.createContainer(App, {
-  listenTo: [SerialStore, GraphStore, ChartStore],
+  listenTo: [SerialStore, GraphStore, ChartStore, DataStore],
   fetch: {
     serialStatus() {
       return SerialStore.for(this).connectionStatus();
     },
-    graphCount() {
+    varCount() {
       return GraphStore.for(this).getVariableCount();
     },
     chartConfig() {
       return ChartStore.for(this).getCharts();
+    },
+    plotData() {
+      return DataStore.for(this).getData();
     }
   }
 });

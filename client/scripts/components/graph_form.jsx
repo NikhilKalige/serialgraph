@@ -34,7 +34,7 @@ var GraphForm = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.updateState(nextProps);
+    // this.updateState(nextProps);
   },
 
   clickHandler: function() {
