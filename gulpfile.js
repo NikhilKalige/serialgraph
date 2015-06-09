@@ -2,16 +2,14 @@
 
 var gulp = require('gulp');
 var del = require('del');
-var path = require('path');
 var less = require('gulp-less');
-var plumber = require("gulp-plumber");
-var colors = require('colors');
-var _ = require("underscore");
+var plumber = require('gulp-plumber');
+var _ = require('underscore');
 var $ = require('gulp-load-plugins')();
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
-var buffer = require("vinyl-buffer");
+var buffer = require('vinyl-buffer');
 var nodemon = require('gulp-nodemon');
 var source = require('vinyl-source-stream');
 var browserSync = require('browser-sync');
@@ -22,6 +20,8 @@ var paths = {
     "bootstrap": "./client/bower_components/bootstrap/less",
     "fontawesome": "./client/bower_components/font-awesome/less",
     "material": "./client/bower_components/bootstrap-material-design/less",
+    "widgets": "./node_modules/react-widgets/lib/less",
+    "react_select": "node_modules/react-select/less",
     "less": "./client/styles/main.less",
     "img_src": "./client/images/**/*",
     "img_dst": "./public/img",
@@ -59,7 +59,7 @@ gulp.task('styles', function() {
             errorHandler: less_error
         }))
         .pipe(less({
-            paths: [paths.bootstrap, paths.fontawesome, paths.material],
+            paths: [paths.bootstrap, paths.fontawesome, paths.material, paths.react_select],
             //verbose: true
         }))
         .pipe($.autoprefixer('last 1 version'))
