@@ -5,7 +5,7 @@ var util = require('util');
 var Socket = require('socket.io');
 var Serial = require('./server/serialSocket');
 
-var port = 8888;
+var port = 8000;
 var __dirname = './';
 
 //helper function handles file verification
