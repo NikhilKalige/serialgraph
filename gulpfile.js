@@ -206,7 +206,7 @@ gulp.task("client", ["watch"], function() {
 
 gulp.task("server", ["watch"], function() {
     nodemon({
-        script: 'app.js',
+        script: 'index.js',
         ext: 'js coffee handlebars',
     });
 })
