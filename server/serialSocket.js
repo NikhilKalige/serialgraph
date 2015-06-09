@@ -5,6 +5,8 @@ var port;
 module.exports = {
     list: function(socket) {
         var count = 0;
+
+        var data = 0;
         socket.on('serialport', function() {
             /*SerialPort.list(function(err, ports) {
                 var list = [];
@@ -30,6 +32,19 @@ module.exports = {
             }
 
             count++;
+
+            if(data == 0) {
+                data = 1;
+                console.log("sedning 2");
+                setInterval((function() {
+                    console.log("sedning 1");
+                    var d = []
+                    d.push(Math.random()*101|0);
+                    d.push(Math.random()*101|0);
+                    d.push(Math.random()*101|0);
+                    socket.emit('serialportdata', d.join(' '));
+                }.bind(this)), 1 * 1000);
+            }
         });
     },
 
