@@ -9,7 +9,7 @@ var port = 8000;
 var __dirname = './';
 
 //helper function handles file verification
-function getFile(filePath, res, page404){
+function getFile(filePath, res){
     //does the requested file exist?
     fs.exists(filePath, function(exists){
         //if it does...
@@ -43,13 +43,12 @@ function requestHandler(req, res) {
     req.url = req.url.split('?')[0];
     var fileName = req.url || '/index.html';
     var localFolder = path.join(__dirname, '/public');
-    var page404 = localFolder + '404.html';
 
     //call our helper function
     //pass in the path to the file we want,
     //the response object, and the 404 page path
     //in case the requestd file is not found
-    getFile((localFolder + fileName), res, page404);
+    getFile((localFolder + fileName), res);
 }
 
 var server = http.createServer(requestHandler);
