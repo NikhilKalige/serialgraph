@@ -188,7 +188,7 @@ gulp.task('extras', function () {
 });
 
 // Watch
-gulp.task('watch', ['html', "styles", 'scripts-client', 'scripts-vendors', 'bower'], function () {
+gulp.task('watch', ['html', 'styles', 'scripts-client', 'scripts-vendors', 'bower'], function () {
     gulp.watch(['client/scripts/**/*.js', 'client/scripts/**/*.jsx'], ['scripts-client', reload]);
     gulp.watch('client/scripts/**/*.json', ['json']);
     gulp.watch('client/*.html', ['html']);
@@ -196,20 +196,20 @@ gulp.task('watch', ['html', "styles", 'scripts-client', 'scripts-vendors', 'bowe
     gulp.watch('client/images/**/*', reload);
 });
 
-gulp.task("client", ["watch"], function() {
+gulp.task('client', ['watch'], function() {
     browserSync({
         notify: false,
         logPrefix: 'BS',
         server: ['public', 'client']
     });
-})
+});
 
-gulp.task("server", ["watch"], function() {
+gulp.task('server', ['watch'], function() {
     nodemon({
         script: 'index.js',
-        ext: 'js coffee handlebars',
+        ext: 'js coffee handlebars'
     });
-})
+});
 
 // Build
 gulp.task('build', ['html', 'buildBundle', 'images', 'extras'], function() {
