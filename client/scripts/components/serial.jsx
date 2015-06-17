@@ -28,6 +28,7 @@ var Dropdown = React.createClass({
         <div className="col-xs-10">
           <select type="select" onChange={this.props.change} name={this.props.title}
             defaultValue={this.props.selected} className="form-control">
+            <option value=""></option>
             {nodes}
           </select>
         </div>
@@ -160,9 +161,9 @@ var Serial = React.createClass({
 
   onChange: function(dom) {
     if(dom.target.name == 'Ports')
-      this.state = this.state.data.set('port', dom.target.value);
+      this.state.data = this.state.data.set('port', dom.target.value);
     else
-      this.state = this.state.data.set('baud', dom.target.value);
+      this.state.data = this.state.data.set('baud', dom.target.value);
     /*
     SerialActionCreators.for(this).updatePort(dom.target.value);
     else
@@ -178,7 +179,9 @@ var Serial = React.createClass({
     if((this.state.data.get('port') != null) && (this.state.data.get('baud') != null)) {
       SerialActionCreators.for(this).updatePort(this.state.data.get('port'));
       SerialActionCreators.for(this).updateBaud(this.state.data.get('baud'));
+      SerialActionCreators.for(this).connect();
       this.state.data = this.state.data.set('clicked', false);
+      this.forceUpdate();
       // Need to call Socket function
     }
     else {

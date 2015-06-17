@@ -4,11 +4,11 @@ var port;
 
 module.exports = {
     list: function(socket) {
-        var count = 0;
+        //var count = 0;
 
         var data = 0;
         socket.on('serialport', function() {
-            /*SerialPort.list(function(err, ports) {
+            SerialPort.list(function(err, ports) {
                 var list = [];
                 if(err)
                     return;
@@ -18,9 +18,9 @@ module.exports = {
                     });
                     socket.emit('serialport', list);
                 }
-            });*/
+            });
             /** Testing without any device connected */
-            if(count == 0)
+            /*if(count == 0)
                 socket.emit('serialport', ['dev/ttyUSB0', '/dev/ttyUSB1']);
             else if(count == 1)
                 socket.emit('serialport', ['dev/ttyUSB7', '/dev/ttyUSB1', '/dev/ttyUSB2']);
@@ -31,9 +31,9 @@ module.exports = {
                 count = 0;
             }
 
-            count++;
+            count++;*/
 
-            if(data == 0) {
+            /*if(data == 0) {
                 data = 1;
                 console.log("sedning 2");
                 setInterval((function() {
@@ -44,7 +44,7 @@ module.exports = {
                     d.push(Math.random()*101|0);
                     socket.emit('serialportdata', d.join(' '));
                 }.bind(this)), 1 * 1000);
-            }
+            }*/
         });
     },
 
@@ -56,12 +56,14 @@ module.exports = {
                 parser: SerialPort.parsers.readline('\n')
             });
             port.on('error', function(data) {
+                console.log(data);
                 socket.emit('serialporterror');
             });
             port.on('open', function() {
                 console.log('open');
                 socket.emit('serialportopen');
                 port.on('data', function(data) {
+                    // console.log(data);
                     socket.emit('serialportdata', data);
                 });
             });

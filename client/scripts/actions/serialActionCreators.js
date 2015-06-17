@@ -11,5 +11,11 @@ module.exports = Marty.createActionCreators({
     },
     updateBaud: function(value) {
         this.dispatch(SerialConstants.UPDATE_BAUD, value);
+    },
+    connect: function() {
+        this.dispatch(SerialConstants.CONNECT);
+    },
+    connectOK: function() {
+        this.dispatch(SerialConstants.CONNECT_OK);
     }
-})
+});

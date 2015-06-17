@@ -24,7 +24,10 @@ module.exports = Marty.createStore({
                 for(var i = 1; i <= dataArr.length; i++) {
                     if(this.state.has(i.toString())) {
                         arr = this.state.get(i.toString());
-                        arr = arr.push(parseInt(dataArr[i-1]));
+                        var value = parseInt(dataArr[i-1]);
+                        if(isNaN(value))
+                            value = 0;
+                        arr = arr.push(value);
                     }
                     else {
                         arr = Immutable.List([dataArr[i-1]]);

@@ -12,11 +12,26 @@ var SerialSocket = Marty.createStateSource({
 
     events: {
         'serialport': 'onGetPort',
+        'serialporterror': 'portError',
+        'serialportopen': 'onPortOpen',
         'serialportdata': 'onGotData'
     },
 
     onGetPort: function(ports) {
         SerialActionCreators.updatePortList(ports);
+    },
+
+    portError: function(error) {
+        console.log(error);
+    },
+
+    onPortOpen: function() {
+        console.log('open');
+        SerialActionCreators.connectOK();
+    },
+
+    setPort: function(data) {
+        this.socket.emit('serialportset', data);
     },
 
     triggerGetPorts: function() {

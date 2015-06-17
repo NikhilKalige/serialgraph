@@ -9,6 +9,17 @@ var Chart = React.createClass({
     };
   },
 
+  getDefaultProps: function() {
+    return {
+      colors: [
+        "rgba(151,187,205,1)",
+        "rgba(151,187,151,1)",
+        "rgba(205,187,151,1)",
+        "rgba(151,151,187,1)"
+      ]
+    };
+  },
+
   render: function() {
     var datasets = [];
     var labels = [];
@@ -22,8 +33,8 @@ var Chart = React.createClass({
         label : val,
         data: this.props.plotData.get(val.toString()).toArray(),
         //data: [1,2,3,4,5,6,7,8,12,13,45,68,99,89,23,45,67,88,33,41,34],
-        strokeColor: "rgba(151,187,205,1)",
-        pointColor: "rgba(151,187,205,1)",
+        strokeColor: this.props.colors[val],
+        pointColor: this.props.colors[val],
         pointStrokeColor: "#fff",
         scaleShowLabels:false
       };

@@ -6,4 +6,4 @@ module.exports = Marty.createActionCreators({
     updateButtons: function(btn_name) {
         this.dispatch(ButtonConstants.UPDATE_BUTTONS, btn_name);
     }
-})
+});

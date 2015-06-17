@@ -3,6 +3,7 @@ var Actions = require("../actions/actions");
 var Marty = require("marty");
 var Immutable = require('immutable');
 var SerialContants = require('../constants/constants').SerialConstants;
+var SerialSocket = require('../sources/serialSocket');
 
 /*module.exports = Reflux.createStore({
     listenables: Actions,
@@ -39,8 +40,11 @@ module.exports = Marty.createStore({
     handlers: {
         updatePort: SerialContants.UPDATE_PORT,
         updateBaud: SerialContants.UPDATE_BAUD,
-        updatePortList: SerialContants.UPDATE_PORT_LIST
+        updatePortList: SerialContants.UPDATE_PORT_LIST,
+        connect: SerialContants.CONNECT,
+        connectOK: SerialContants.CONNECT_OK
     },
+
     getInitialState: function() {
         return Immutable.Map({
             ports: Immutable.List(),
@@ -49,9 +53,21 @@ module.exports = Marty.createStore({
                 port: null,
                 baud: null
             }),
-            connected: true
+            connected: false
         });
     },
+
+    connect: function() {
+        SerialSocket.setPort({
+            'Ports': this.state.get('current').get('port'),
+            'Baud': this.state.get('current').get('baud')
+        });
+    },
+
+    connectOK: function() {
+        this.state = this.state.set('connected', true);
+    },
+
     updateBaud: function(value) {
         this.state = this.state.update('current', function(obj) {
             return obj.set('baud', value);
