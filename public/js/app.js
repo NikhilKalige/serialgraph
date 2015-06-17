@@ -69,7 +69,8 @@ module.exports = Marty.createActionCreators({
     updateButtons: function(btn_name) {
         this.dispatch(ButtonConstants.UPDATE_BUTTONS, btn_name);
     }
-})
+});
+
 
 },{"../constants/constants":19,"marty":"marty"}],4:[function(require,module,exports){
 var Marty = require('marty');
@@ -125,8 +126,15 @@ module.exports = Marty.createActionCreators({
     },
     updateBaud: function(value) {
         this.dispatch(SerialConstants.UPDATE_BAUD, value);
+    },
+    connect: function() {
+        this.dispatch(SerialConstants.CONNECT);
+    },
+    connectOK: function() {
+        this.dispatch(SerialConstants.CONNECT_OK);
     }
-})
+});
+
 
 },{"../constants/constants":19,"marty":"marty"}],8:[function(require,module,exports){
 var React = require('react');
@@ -259,6 +267,17 @@ var Chart = React.createClass({displayName: "Chart",
     };
   },
 
+  getDefaultProps: function() {
+    return {
+      colors: [
+        "rgba(151,187,205,1)",
+        "rgba(151,187,151,1)",
+        "rgba(205,187,151,1)",
+        "rgba(151,151,187,1)"
+      ]
+    };
+  },
+
   render: function() {
     var datasets = [];
     var labels = [];
@@ -272,8 +291,8 @@ var Chart = React.createClass({displayName: "Chart",
         label : val,
         data: this.props.plotData.get(val.toString()).toArray(),
         //data: [1,2,3,4,5,6,7,8,12,13,45,68,99,89,23,45,67,88,33,41,34],
-        strokeColor: "rgba(151,187,205,1)",
-        pointColor: "rgba(151,187,205,1)",
+        strokeColor: this.props.colors[val],
+        pointColor: this.props.colors[val],
         pointStrokeColor: "#fff",
         scaleShowLabels:false
       };
@@ -1064,6 +1083,7 @@ var Dropdown = React.createClass({displayName: "Dropdown",
         React.createElement("div", {className: "col-xs-10"}, 
           React.createElement("select", {type: "select", onChange: this.props.change, name: this.props.title, 
             defaultValue: this.props.selected, className: "form-control"}, 
+            React.createElement("option", {value: ""}), 
             nodes
           )
         )
@@ -1196,9 +1216,9 @@ var Serial = React.createClass({displayName: "Serial",
 
   onChange: function(dom) {
     if(dom.target.name == 'Ports')
-      this.state = this.state.data.set('port', dom.target.value);
+      this.state.data = this.state.data.set('port', dom.target.value);
     else
-      this.state = this.state.data.set('baud', dom.target.value);
+      this.state.data = this.state.data.set('baud', dom.target.value);
     /*
     SerialActionCreators.for(this).updatePort(dom.target.value);
     else
@@ -1214,7 +1234,9 @@ var Serial = React.createClass({displayName: "Serial",
     if((this.state.data.get('port') != null) && (this.state.data.get('baud') != null)) {
       SerialActionCreators.for(this).updatePort(this.state.data.get('port'));
       SerialActionCreators.for(this).updateBaud(this.state.data.get('baud'));
+      SerialActionCreators.for(this).connect();
       this.state.data = this.state.data.set('clicked', false);
+      this.forceUpdate();
       // Need to call Socket function
     }
     else {
@@ -1390,7 +1412,9 @@ var ButtonConstants = Marty.createConstants([
 var SerialConstants = Marty.createConstants([
     'UPDATE_PORT',
     'UPDATE_BAUD',
-    'UPDATE_PORT_LIST'
+    'UPDATE_PORT_LIST',
+    'CONNECT',
+    'CONNECT_OK'
 ]);
 
 var GraphConstants = Marty.createConstants([
@@ -1432,11 +1456,26 @@ var SerialSocket = Marty.createStateSource({
 
     events: {
         'serialport': 'onGetPort',
+        'serialporterror': 'portError',
+        'serialportopen': 'onPortOpen',
         'serialportdata': 'onGotData'
     },
 
     onGetPort: function(ports) {
         SerialActionCreators.updatePortList(ports);
+    },
+
+    portError: function(error) {
+        console.log(error);
+    },
+
+    onPortOpen: function() {
+        console.log('open');
+        SerialActionCreators.connectOK();
+    },
+
+    setPort: function(data) {
+        this.socket.emit('serialportset', data);
     },
 
     triggerGetPorts: function() {
@@ -1592,7 +1631,10 @@ module.exports = Marty.createStore({
                 for(var i = 1; i <= dataArr.length; i++) {
                     if(this.state.has(i.toString())) {
                         arr = this.state.get(i.toString());
-                        arr = arr.push(parseInt(dataArr[i-1]));
+                        var value = parseInt(dataArr[i-1]);
+                        if(isNaN(value))
+                            value = 0;
+                        arr = arr.push(value);
                     }
                     else {
                         arr = Immutable.List([dataArr[i-1]]);
@@ -1710,6 +1752,7 @@ var Actions = require("../actions/actions");
 var Marty = require("marty");
 var Immutable = require('immutable');
 var SerialContants = require('../constants/constants').SerialConstants;
+var SerialSocket = require('../sources/serialSocket');
 
 /*module.exports = Reflux.createStore({
     listenables: Actions,
@@ -1746,8 +1789,11 @@ module.exports = Marty.createStore({
     handlers: {
         updatePort: SerialContants.UPDATE_PORT,
         updateBaud: SerialContants.UPDATE_BAUD,
-        updatePortList: SerialContants.UPDATE_PORT_LIST
+        updatePortList: SerialContants.UPDATE_PORT_LIST,
+        connect: SerialContants.CONNECT,
+        connectOK: SerialContants.CONNECT_OK
     },
+
     getInitialState: function() {
         return Immutable.Map({
             ports: Immutable.List(),
@@ -1756,9 +1802,21 @@ module.exports = Marty.createStore({
                 port: null,
                 baud: null
             }),
-            connected: true
+            connected: false
         });
     },
+
+    connect: function() {
+        SerialSocket.setPort({
+            'Ports': this.state.get('current').get('port'),
+            'Baud': this.state.get('current').get('baud')
+        });
+    },
+
+    connectOK: function() {
+        this.state = this.state.set('connected', true);
+    },
+
     updateBaud: function(value) {
         this.state = this.state.update('current', function(obj) {
             return obj.set('baud', value);
@@ -1803,7 +1861,7 @@ module.exports = Marty.createStore({
 
 
 
-},{"../actions/actions":2,"../constants/constants":19,"immutable":"immutable","marty":"marty","reflux":"reflux"}],26:[function(require,module,exports){
+},{"../actions/actions":2,"../constants/constants":19,"../sources/serialSocket":20,"immutable":"immutable","marty":"marty","reflux":"reflux"}],26:[function(require,module,exports){
 var Immutable = require('immutable');
 var Chart = Immutable.Record({
     title: '',
