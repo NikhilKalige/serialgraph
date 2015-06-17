@@ -269,6 +269,7 @@ var Chart = React.createClass({displayName: "Chart",
 
   getDefaultProps: function() {
     return {
+      width: window.innerWidth - 100,
       colors: [
         "rgba(151,187,205,1)",
         "rgba(151,187,151,1)",
@@ -307,9 +308,9 @@ var Chart = React.createClass({displayName: "Chart",
       datasets: datasets
     };
     return (
-      React.createElement("div", {className: "container well"}, 
+      React.createElement("div", {className: "container-fluid well"}, 
         React.createElement(LineChart, {data: simpleLineChartData, 
-          options: {datasetFill : false, animation: false}, width: "1150", height: "500", redraw: true})
+          options: {datasetFill : false, animation: false}, width: this.props.width, height: "500", redraw: true})
       )
     );
   }
@@ -1023,9 +1024,9 @@ var App = React.createClass({displayName: "App",
           React.createElement(Serial, null), 
           this.props.serialStatus ? React.createElement(Graph, null) : false, 
           this.props.varCount ? React.createElement(AddGraph, null) : false, 
-          this.props.varCount ? graph_forms: false, 
-          this.props.varCount ? charts: false
-        )
+          this.props.varCount ? graph_forms: false
+        ), 
+        this.props.varCount ? charts: false
       )
     );
   }

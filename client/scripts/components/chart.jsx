@@ -11,6 +11,7 @@ var Chart = React.createClass({
 
   getDefaultProps: function() {
     return {
+      width: window.innerWidth - 100,
       colors: [
         "rgba(151,187,205,1)",
         "rgba(151,187,151,1)",
@@ -49,9 +50,9 @@ var Chart = React.createClass({
       datasets: datasets
     };
     return (
-      <div className="container well">
+      <div className="container-fluid well">
         <LineChart data={simpleLineChartData}
-          options={{datasetFill : false, animation: false}}width="1150" height="500" redraw/>
+          options={{datasetFill : false, animation: false}}width={this.props.width} height="500" redraw/>
       </div>
     );
   }

@@ -84,8 +84,8 @@ var App = React.createClass({
           {this.props.serialStatus ? <Graph /> : false}
           {this.props.varCount ? <AddGraph /> : false}
           {this.props.varCount ? graph_forms: false}
-          {this.props.varCount ? charts: false}
         </div>
+        {this.props.varCount ? charts: false}
       </div>
     );
   }
